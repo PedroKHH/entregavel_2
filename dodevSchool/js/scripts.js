@@ -1,62 +1,79 @@
-////////////////////////////////////////////////////////////////////////
-////////////////// FAÇA O SEU CÓDIGO AQUI \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-////////////////////////////////////////////////////////////////////////
-
 class Aluno {
-  
+  Nome;
+  Idade;
+  Nota;
+
+  constructor(nome, idade, nota) {
+    this.Nome = nome;
+    this.Idade = idade;
+    this.Nota = nota;
+  }
 }
 
-// Array
+let arrayAlunos = [];
 
-
-//funções projeto
-
-function CadastrarAluno() {
-  
+function CadastrarAluno(nome, idade, nota, array) {
+  let aluno = new Aluno(nome, idade, nota);
+  if (!array.some((x) => x.Nome == nome)) array.push(aluno);
+  return aluno;
 }
 
-function OrdenarPorNota() {
- 
+function OrdenarPorNota(arrayAlunos) {
+  let arrayOrdenadoDoMenor = arrayAlunos.sort((a, b) => a.Nota - b.Nota);
+
+  return arrayOrdenadoDoMenor;
 }
 
-function OrdenarPorIdade() {
+function OrdenarPorIdade(arrayAlunos) {
+  let arrayIdades = arrayAlunos.sort((a, b) => b.Idade - a.Idade);
 
+  return arrayIdades;
 }
 
-function OrdenarPorNome() {
+function OrdenarPorNome(arrayAlunos) {
+  let arrayOrdemPorNome = arrayAlunos.sort((a, b) => {
+    if (a.Nome < b.Nome) return -1;
+    if (a.Nome > b.Nome) return 1;
 
+    return 0;
+  });
+
+  return arrayOrdemPorNome;
 }
 
-function CalcularMedia(){
+function CalcularMedia(arrayAlunos) {
+  let totalDeNotas = 0;
+  arrayAlunos.forEach((aluno) => {
+    totalDeNotas += Number(aluno.Nota);
+  });
 
+  let media = totalDeNotas / arrayAlunos.length;
+
+  return media;
 }
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
 
 function ExcluirAluno(array, nome) {
-  let index
-  let removido = false
-  array.forEach(aluno => {
+  let index;
+  let removido = false;
+  array.forEach((aluno) => {
     if (aluno.Nome == nome) {
-      index = array.indexOf(aluno)
-      removido = true
+      index = array.indexOf(aluno);
+      removido = true;
     }
-  })
-  array.splice(index, 1)
-  return removido
+  });
+  array.splice(index, 1);
+  return removido;
 }
 
 function PesquisarAluno(array, nome) {
-  let pesquisa = false
-  array.forEach(aluno => {
+  let pesquisa = false;
+  array.forEach((aluno) => {
     if (aluno.Nome.includes(nome)) {
-      pesquisa = true
+      pesquisa = true;
     }
-  })
+  });
 
-  return pesquisa
+  return pesquisa;
 }
 
 // Seleção de elementos
@@ -76,7 +93,7 @@ let oldInputValue;
 
 // Funções
 const saveAluno = (nome, idade, nota, done = 0, save = 1) => {
-  let objetoAluno = CadastrarAluno(nome, idade, nota, arrayAlunos)
+  let objetoAluno = CadastrarAluno(nome, idade, nota, arrayAlunos);
 
   const aluno = document.createElement("div");
   aluno.classList.add("aluno");
@@ -101,15 +118,13 @@ const saveAluno = (nome, idade, nota, done = 0, save = 1) => {
   // Utilizando dados da localStorage
 
   alunoList.appendChild(aluno);
-  
 
   const media = document.querySelector("#media");
-  media.textContent = CalcularMedia(arrayAlunos).toFixed(2)
+  media.textContent = CalcularMedia(arrayAlunos).toFixed(2);
 
   alunoInput.value = "";
   alunoInput2.value = "";
   alunoInput3.value = "";
-
 };
 
 const toggleForms = () => {
@@ -121,7 +136,7 @@ const toggleForms = () => {
 const getBuscarAluno = (busca) => {
   const alunos = document.querySelectorAll(".aluno");
 
-  let pesquisa = PesquisarAluno(arrayAlunos, busca)
+  let pesquisa = PesquisarAluno(arrayAlunos, busca);
 
   if (pesquisa) {
     alunos.forEach((aluno) => {
@@ -133,10 +148,8 @@ const getBuscarAluno = (busca) => {
         aluno.style.display = "none";
       }
     });
-  };
-}
-
-
+  }
+};
 
 const filterAlunos = (filterValue) => {
   const alunos = document.querySelectorAll(".aluno");
@@ -144,26 +157,32 @@ const filterAlunos = (filterValue) => {
   switch (filterValue) {
     case "nota":
       alunos.forEach((aluno) => {
-        aluno.remove()
-      })
-      arrayAlunos = OrdenarPorNota(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+        aluno.remove();
+      });
+      arrayAlunos = OrdenarPorNota(arrayAlunos);
+      arrayAlunos.forEach((aluno) =>
+        saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, (done = 0), (save = 1))
+      );
       break;
 
     case "idade":
       alunos.forEach((aluno) => {
-        aluno.remove()
-      })
-      arrayAlunos = OrdenarPorIdade(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+        aluno.remove();
+      });
+      arrayAlunos = OrdenarPorIdade(arrayAlunos);
+      arrayAlunos.forEach((aluno) =>
+        saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, (done = 0), (save = 1))
+      );
       break;
 
     case "nome":
       alunos.forEach((aluno) => {
-        aluno.remove()
-      })
-      arrayAlunos = OrdenarPorNome(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+        aluno.remove();
+      });
+      arrayAlunos = OrdenarPorNome(arrayAlunos);
+      arrayAlunos.forEach((aluno) =>
+        saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, (done = 0), (save = 1))
+      );
       break;
 
     default:
@@ -194,15 +213,13 @@ document.addEventListener("click", (e) => {
   }
 
   if (targetEl.classList.contains("remove-aluno")) {
-    alunoTitle = parentEl.querySelector("h3").innerText
-    let removido = ExcluirAluno(arrayAlunos, alunoTitle)
+    alunoTitle = parentEl.querySelector("h3").innerText;
+    let removido = ExcluirAluno(arrayAlunos, alunoTitle);
     if (removido) {
       parentEl.remove();
 
       // Utilizando dados da localStorage
-
     }
-
   }
 });
 
